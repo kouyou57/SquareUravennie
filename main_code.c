@@ -11,6 +11,7 @@ struct Refference {
 
 /* solver function */
 int Solver(double a, double b, double c, double *x1, double *x2) {
+
     if (a == 0.0) {
         if (b == 0.0) {
             return (c == 0.0) ? 3 : 0;  /* 3 = infinity */
@@ -23,7 +24,7 @@ int Solver(double a, double b, double c, double *x1, double *x2) {
 
     else {
         double d = b * b - 4 * a * c;
-        printf("d = %lf", d);
+        printf("d = %.20lf\n", d);
         if (d == 0.0) {
             *x1 = *x2 = - b / (2 * a);
             return 1;
@@ -42,10 +43,11 @@ int Solver(double a, double b, double c, double *x1, double *x2) {
 /* one test */
 int Test(double a, double b, double c, int nRoots_r, double x1_r, double x2_r) {
     double x1 = 0, x2 = 0;
+
     int nRoots = Solver(a,b,c, &x1, &x2);
 
     if (nRoots == nRoots_r) {
-        if (x1 == x1_r) && (x2 == x2_r) {
+        if ((x1 == x1_r) && (x2 == x2_r)) {
             printf("ok");
             return 0; /* ok */
         }
@@ -54,18 +56,18 @@ int Test(double a, double b, double c, int nRoots_r, double x1_r, double x2_r) {
             printf("nRoots ok, nRoots = %d", nRoots);
             printf("expected x1 = %lf, x2 = %lf", x1_r, x2_r);
             printf("got x1 = %lf, x2 = %lf", x1, x2);
-            return 1; /* korni nevernye */
+            return 1; /* wrong solutions */
         }
     }
     else {
-        printf("------> error!!\n);
+        printf("------> error!!\n");
         printf("expected nRoots = %d\n");
         printf("got nRoots = %d", nRoots_r, nRoots);
-        return 2; /* nevernoe kolichestvo korney */
+        return 2; /* wrong number of solutions */
     }
 }
 
-void RunAllTEsts() {
+void RunAllTests() {
 
 }
 
@@ -79,8 +81,9 @@ int main() {
     printf("----------\n");
 
 
-    double x1 = 0, x2 = 0; /* solves */
-    int nRoots = Solver(a,b,c, &x1, &x2); /* number of solves */
+    double x1 = 0, x2 = 0; /* solutions */
+
+    int nRoots = Solver(a,b,c, &x1, &x2); /* number of solutions */
 
     switch(nRoots) {
         case 0:
