@@ -7,6 +7,7 @@ struct Refference {
     int nRoots_r;
     double x1_r, x2_r;
 }
+;
 
 /* solver function */
 int Solver(double a, double b, double c, double *x1, double *x2) {
@@ -22,6 +23,7 @@ int Solver(double a, double b, double c, double *x1, double *x2) {
 
     else {
         double d = b * b - 4 * a * c;
+        printf("d = %lf", d);
         if (d == 0.0) {
             *x1 = *x2 = - b / (2 * a);
             return 1;
@@ -48,7 +50,7 @@ int Test(double a, double b, double c, int nRoots_r, double x1_r, double x2_r) {
             return 0; /* ok */
         }
         else {
-            printf("------> error!!\n);
+            printf("------> error!!\n");
             printf("nRoots ok, nRoots = %d", nRoots);
             printf("expected x1 = %lf, x2 = %lf", x1_r, x2_r);
             printf("got x1 = %lf, x2 = %lf", x1, x2);
