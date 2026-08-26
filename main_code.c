@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#define ZERO 0.0000009
+#define ZERO_BORDER 0.0000009
 
 struct Refference {
     double a,b,c;
@@ -14,9 +14,9 @@ struct Refference {
 /* solver function */
 int Solver(double a, double b, double c, double *x1, double *x2) {
 
-    if (a == 0.0) {
-        if (b == 0.0) {
-            return (c == 0.0) ? 3 : 0;  /* 3 = infinity */
+    if ((- ZERO_BORDER <= a) && (a <= ZERO_BORDER)) {
+        if ((- ZERO_BORDER <= b) && (b <= ZERO_BORDER)) {
+            return ((- ZERO_BORDER <= c) && (c <= ZERO_BORDER)) ? 3 : 0;  /* 3 = infinity */
         }
         else {
             *x1 = *x2 = - c / b;
@@ -26,12 +26,12 @@ int Solver(double a, double b, double c, double *x1, double *x2) {
 
     else {
         double d = b * b - 4 * a * c;
-        printf("d = %.20lf\n", d);
-        if ((-ZERO <= d) && (d <= ZERO)) {
+        printf("discriminant = %.20lf\n", d);
+        if ((- ZERO_BORDER <= d) && (d <= ZERO_BORDER)) {
             *x1 = *x2 = - b / (2 * a);
             return 1;
         }
-        else if (d > ZERO) {
+        else if (d > ZERO_BORDER) {
             double sqrt_d = sqrt(d);
             *x1 = (- b + sqrt_d) / (2 * a);
             *x2 = (- b - sqrt_d) / (2 * a);
@@ -49,7 +49,7 @@ int Test(double a, double b, double c, int nRoots_r, double x1_r, double x2_r) {
     int nRoots = Solver(a,b,c, &x1, &x2);
 
     if (nRoots == nRoots_r) {
-        if ((x1 == x1_r) && (x2 == x2_r)) {
+        if ((x1_r - ZERO_BORDER <= x1) && (x1 <= x1_r + ZERO_BORDER) && (x2_r - ZERO_BORDER <= x2) && (x2 <= x2_r + ZERO_BORDER)) {
             printf("ok");
             return 0; /* ok */
         }
