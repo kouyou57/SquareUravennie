@@ -63,10 +63,11 @@ int main() {
 
         case 4:
             printf("d < 0! zero solves or error");
+            break;
 
         default:
             printf("error! nRoots = %d", nRoots);
-            break
+            break;
     }
     return 0;
 }
