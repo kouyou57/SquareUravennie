@@ -25,7 +25,7 @@ int Solver(double a, double b, double c, double *x1, double *x2) {
     else {
         double d = b * b - 4 * a * c;
         printf("d = %.20lf\n", d);
-        if (d == 0.0) {
+        if (d <= 0.0000009) {
             *x1 = *x2 = - b / (2 * a);
             return 1;
         }
