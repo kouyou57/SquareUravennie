@@ -2,6 +2,13 @@
 #include <stdio.h>
 #include <math.h>
 
+struct Refference {
+    double a,b,c;
+    int nRoots_r;
+    double x1_r, x2_r;
+}
+
+/* solver function */
 int Solver(double a, double b, double c, double *x1, double *x2) {
     if (a == 0.0) {
         if (b == 0.0) {
@@ -30,6 +37,35 @@ int Solver(double a, double b, double c, double *x1, double *x2) {
     }
 }
 
+/* one test */
+int Test(double a, double b, double c, int nRoots_r, double x1_r, double x2_r) {
+    double x1 = 0, x2 = 0;
+    int nRoots = Solver(a,b,c, &x1, &x2);
+
+    if (nRoots == nRoots_r) {
+        if (x1 == x1_r) && (x2 == x2_r) {
+            printf("ok");
+            return 0; /* ok */
+        }
+        else {
+            printf("------> error!!\n);
+            printf("nRoots ok, nRoots = %d", nRoots);
+            printf("expected x1 = %lf, x2 = %lf", x1_r, x2_r);
+            printf("got x1 = %lf, x2 = %lf", x1, x2);
+            return 1; /* korni nevernye */
+        }
+    }
+    else {
+        printf("------> error!!\n);
+        printf("expected nRoots = %d\n");
+        printf("got nRoots = %d", nRoots_r, nRoots);
+        return 2; /* nevernoe kolichestvo korney */
+    }
+}
+
+void RunAllTEsts() {
+
+}
 
 int main() {
 
