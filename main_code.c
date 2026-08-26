@@ -4,6 +4,11 @@
 
 #define ZERO_BORDER 0.0000009
 
+int Are_Equal(double num1, double num2);
+int Solver(double a, double b, double c, double *x1, double *x2);
+int Test(double a, double b, double c, int nRoots_r, double x1_r, double x2_r);
+void RunAllTests();
+
 struct Refference {
     double a,b,c;
     int nRoots_r;
@@ -11,23 +16,33 @@ struct Refference {
 }
 ;
 
+/* compares equal or part-equal double. kills warnings. no warnings, no problems */
+int Are_Equal(double num1, double num2) {
+    if ((num1 - ZERO_BORDER <= num2) && (num2 <= num1 + ZERO_BORDER)) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
 /* solver function */
 int Solver(double a, double b, double c, double *x1, double *x2) {
 
-    if ((- ZERO_BORDER <= a) && (a <= ZERO_BORDER)) {
-        if ((- ZERO_BORDER <= b) && (b <= ZERO_BORDER)) {
-            return ((- ZERO_BORDER <= c) && (c <= ZERO_BORDER)) ? 3 : 0;  /* 3 = infinity */
+    if (Are_Equal(a, 0)) {
+        if (Are_Equal(b, 0)) {
+            return (Are_Equal(c, 0)) ? 3 : 0;  /* 3 = infinity */
         }
         else {
             *x1 = *x2 = - c / b;
             return 1;
         }
     }
-
     else {
         double d = b * b - 4 * a * c;
-        printf("discriminant = %.20lf\n", d);
-        if ((- ZERO_BORDER <= d) && (d <= ZERO_BORDER)) {
+        printf(">> discriminant = %.20lf\n", d);
+
+        if (Are_Equal(d,0)) {
             *x1 = *x2 = - b / (2 * a);
             return 1;
         }
@@ -49,7 +64,7 @@ int Test(double a, double b, double c, int nRoots_r, double x1_r, double x2_r) {
     int nRoots = Solver(a,b,c, &x1, &x2);
 
     if (nRoots == nRoots_r) {
-        if ((x1_r - ZERO_BORDER <= x1) && (x1 <= x1_r + ZERO_BORDER) && (x2_r - ZERO_BORDER <= x2) && (x2 <= x2_r + ZERO_BORDER)) {
+        if ((Are_Equal(x1, x1_r)) && (Are_Equal(x2, x2_r))) {
             printf("ok");
             return 0; /* ok */
         }
@@ -70,7 +85,7 @@ int Test(double a, double b, double c, int nRoots_r, double x1_r, double x2_r) {
 }
 
 void RunAllTests() {
-
+   /* don't forget about this function */
 }
 
 int main() {
@@ -112,5 +127,6 @@ int main() {
             printf("error! nRoots = %d", nRoots);
             break;
     }
+    printf("\n");
     return 0;
 }
