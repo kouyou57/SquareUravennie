@@ -18,7 +18,7 @@ struct Refference {
 
 /* compares equal or part-equal double. kills warnings. no warnings, no problems */
 int Are_Equal(double num1, double num2) {
-    if ((num1 - ZERO_BORDER <= num2) && (num2 <= num1 + ZERO_BORDER)) {
+    if (fabs(num1 - num2) <= ZERO_BORDER) {
         return 1;
     }
     else {
