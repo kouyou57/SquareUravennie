@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <math.h>
 
+#define ZERO 0.0000009
+
 struct Refference {
     double a,b,c;
     int nRoots_r;
@@ -25,11 +27,11 @@ int Solver(double a, double b, double c, double *x1, double *x2) {
     else {
         double d = b * b - 4 * a * c;
         printf("d = %.20lf\n", d);
-        if (d <= 0.0000009) {
+        if ((-ZERO <= d) && (d <= ZERO)) {
             *x1 = *x2 = - b / (2 * a);
             return 1;
         }
-        else if (d > 0) {
+        else if (d > ZERO) {
             double sqrt_d = sqrt(d);
             *x1 = (- b + sqrt_d) / (2 * a);
             *x2 = (- b - sqrt_d) / (2 * a);
@@ -61,8 +63,8 @@ int Test(double a, double b, double c, int nRoots_r, double x1_r, double x2_r) {
     }
     else {
         printf("------> error!!\n");
-        printf("expected nRoots = %d\n");
-        printf("got nRoots = %d", nRoots_r, nRoots);
+        printf("expected nRoots = %d\n", nRoots_r);
+        printf("got nRoots = %d", nRoots);
         return 2; /* wrong number of solutions */
     }
 }
