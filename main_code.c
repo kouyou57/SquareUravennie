@@ -4,7 +4,7 @@
 
 #define ZERO_BORDER 0.0000009
 
-struct Refference {
+struct Square_Example {
     double a,b,c;
     int nRoots_r;
     double x1_r, x2_r;
@@ -12,7 +12,7 @@ struct Refference {
 
 int Are_Equal(double num1, double num2);
 int Solver(double a, double b, double c, double *x1, double *x2);
-void Test(struct Refference ref);
+void Test(struct Square_Example ref);
 void RunAllTests();
 
 /* compares equal or part-equal double. kills warnings. no warnings, no problems */
@@ -56,7 +56,7 @@ int Solver(double a, double b, double c, double *x1, double *x2) {
 }
 
 /* one test */
-void Test(struct Refference ref) {
+void Test(struct Square_Example ref) {
     double a = ref.a;
     double b = ref.b;
     double c = ref.c;
@@ -83,7 +83,7 @@ void Test(struct Refference ref) {
             }
         }
         else {
-            printf("ok");
+            printf("ok\n");
         }
     }
     else {
@@ -95,18 +95,18 @@ void Test(struct Refference ref) {
 
 void RunAllTests() {
 
-    struct Refference ref0 = {.a = 1, .b = 2, .c = 1, .nRoots_r = 1, .x1_r = -1, .x2_r = -1};
-    struct Refference ref1 = {.a = 1, .b = -2, .c = 1, .nRoots_r = 1, .x1_r = 1, .x2_r = 1};
-    struct Refference ref2 = {.a = 1, .b = 2, .c = 3, .nRoots_r = 4, .x1_r = 0, .x2_r = 0};
-    struct Refference ref3 = {.a = 0, .b = 1, .c = 2, .nRoots_r = 1, .x1_r = -2, .x2_r = -2};
-    struct Refference ref4 = {.a = 1, .b = -4, .c = -21, .nRoots_r = 2, .x1_r = 7, .x2_r = -3};
-    struct Refference ref5 = {.a = 0, .b = 0, .c = 0, .nRoots_r = 3, .x1_r = 0, .x2_r = 0};
-    struct Refference ref6 = {.a = 0, .b = 0, .c = 1, .nRoots_r = 0, .x1_r = 0, .x2_r = 0};
-    struct Refference ref7 = {.a = 0.3333333, .b = 2, .c = 3, .nRoots_r = 1, .x1_r = -3, .x2_r = -3};
-    struct Refference ref8 = {.a = 5, .b = 10, .c = 3, .nRoots_r = 4, .x1_r = 0, .x2_r = 0};
-    struct Refference ref9 = {.a = 0, .b = 0, .c = 15, .nRoots_r = 0, .x1_r = 0, .x2_r = 0};
+    struct Square_Example ref0 = {.a = 1, .b = 2, .c = 1, .nRoots_r = 1, .x1_r = -1, .x2_r = -1};
+    struct Square_Example ref1 = {.a = 1, .b = -2, .c = 1, .nRoots_r = 1, .x1_r = 1, .x2_r = 1};
+    struct Square_Example ref2 = {.a = 1, .b = 2, .c = 3, .nRoots_r = 4, .x1_r = 0, .x2_r = 0};
+    struct Square_Example ref3 = {.a = 0, .b = 1, .c = 2, .nRoots_r = 1, .x1_r = -2, .x2_r = -2};
+    struct Square_Example ref4 = {.a = 1, .b = -4, .c = -21, .nRoots_r = 2, .x1_r = 7, .x2_r = -3};
+    struct Square_Example ref5 = {.a = 0, .b = 0, .c = 0, .nRoots_r = 3, .x1_r = 0, .x2_r = 0};
+    struct Square_Example ref6 = {.a = 0, .b = 0, .c = 1, .nRoots_r = 0, .x1_r = 0, .x2_r = 0};
+    struct Square_Example ref7 = {.a = 0.3333333, .b = 2, .c = 3, .nRoots_r = 1, .x1_r = -3, .x2_r = -3};
+    struct Square_Example ref8 = {.a = 5, .b = 10, .c = 3, .nRoots_r = 4, .x1_r = 0, .x2_r = 0};
+    struct Square_Example ref9 = {.a = 0, .b = 0, .c = 15, .nRoots_r = 0, .x1_r = 0, .x2_r = 0};
 
-    struct Refference unit_tests[10] = {ref0, ref1, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9} ;
+    struct Square_Example unit_tests[10] = {ref0, ref1, ref2, ref3, ref4, ref5, ref6, ref7, ref8, ref9} ;
 
     int number_of_tests = sizeof(unit_tests) ;
     for (int i=0; i < number_of_tests; i++) {
