@@ -96,7 +96,7 @@ void Test(struct Square_Example example) {
 void RunAllTests() {
 
     struct Square_Example ex0 = {.a = 1, .b = 2, .c = 1, .nRoots = 1, .x1 = -1, .x2 = -1};
-    struct Square_Example ex1 = {.a = 1, .b = -2, .c = 1, .nRoots = 1, .x1 = 1, .x2 = 1};
+    struct Square_Example ex1 = {.a = 1, .b = -2, .c = 1, .nRoots = 2, .x1 = 1, .x2 = 3}; /* wrong */
     struct Square_Example ex2 = {.a = 1, .b = 2, .c = 3, .nRoots = 4, .x1 = 0, .x2 = 0};
     struct Square_Example ex3 = {.a = 0, .b = 1, .c = 2, .nRoots = 1, .x1 = -2, .x2 = -2};
     struct Square_Example ex4 = {.a = 1, .b = -4, .c = -21, .nRoots = 2, .x1 = 7, .x2 = -3};
