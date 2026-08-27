@@ -103,12 +103,12 @@ void RunAllTests() {
     struct Square_Example ex5 = {.a = 0, .b = 0, .c = 0, .nRoots = 3, .x1 = 0, .x2 = 0};
     struct Square_Example ex6 = {.a = 0, .b = 0, .c = 1, .nRoots = 0, .x1 = 0, .x2 = 0};
     struct Square_Example ex7 = {.a = 0.3333333, .b = 2, .c = 3, .nRoots = 1, .x1 = -3, .x2 = -3};
-    struct Square_Example ex8 = {.a = 5, .b = 10, .c = 3, .nRoots = 4, .x1 = 0, .x2 = 0};
+    struct Square_Example ex8 = {.a = 5, .b = 3, .c = 10, .nRoots = 4, .x1 = 0, .x2 = 0};
     struct Square_Example ex9 = {.a = 0, .b = 0, .c = 15, .nRoots = 0, .x1 = 0, .x2 = 0};
 
     struct Square_Example unit_tests[10] = {ex0, ex1, ex2, ex3, ex4, ex5, ex6, ex7, ex8, ex9} ;
 
-    int number_of_tests = sizeof(unit_tests) ;
+    int number_of_tests = sizeof(unit_tests)/sizeof(unit_tests[0]);
     for (int i=0; i < number_of_tests; i++) {
         Test(unit_tests[i]);
     }
@@ -119,7 +119,7 @@ int main() {
 
     RunAllTests();
 
-    printf("\n\n\n\n\n--------------\n");
+    printf("\n\n\n------------------\n");
     printf("This program solves square equations\n");
     printf("Enter a,b,c through a space (probel)\n");
 
