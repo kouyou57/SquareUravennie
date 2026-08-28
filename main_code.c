@@ -4,7 +4,7 @@
 
 #define ZERO_BORDER 1e-6
 
-struct Square_Example {
+struct SquareExample {
     double a, b, c;
     int nRoots;
     double x1, x2;
@@ -14,32 +14,32 @@ enum Solves {
     inf_roots = -1,
     zero_roots = 0,
     one_root = 1,
-    two_roots = 2
+    two_roots = 2,
 
 } ;
 
-int Is_Zero(double x);
-int Are_Equal(double num1, double num2);
+int IsZero(double x);
+int AreEqual(double num1, double num2);
 int Solver(double a, double b, double c, double *x1, double *x2);
-void Test(struct Square_Example ex);
+void Test(struct SquareExample ex);
 void RunAllTests();
 
 /* checks double to be near zero */
-int Is_Zero(double x) {
-    return (fabs(x) <= ZERO_BORDER) ;
+int IsZero(double x) {
+    return fabs(x) <= ZERO_BORDER;
 }
 
 /* compares equal or part-equal double */
-int Are_Equal(double num1, double num2) {
-    return Is_Zero(num1 - num2) ;
+int AreEqual(double num1, double num2) {
+    return IsZero(num1 - num2);
 }
 
 /* solver function */
 int Solver(double a, double b, double c, double *x1, double *x2) {
 
-    if (Is_Zero(a)) {
-        if (Is_Zero(b)) {
-            return (Is_Zero(c)) ? inf_roots : zero_roots;
+    if (IsZero(a)) {
+        if (IsZero(b)) {
+            return (IsZero(c)) ? inf_roots : zero_roots;
         }
         else {
             *x1 = *x2 = - c / b;
@@ -49,14 +49,14 @@ int Solver(double a, double b, double c, double *x1, double *x2) {
     else {
         double d = b * b - 4 * a * c;
 
-        if (Is_Zero(d)) {
-            *x1 = *x2 = - b / (2 * a);
+        if (IsZero(d)) {
+            *x1 = *x2 = -b / (2 * a);
             return one_root;
         }
         else if (d > 0) {
             double sqrt_d = sqrt(d);
-            *x1 = (- b + sqrt_d) / (2 * a);
-            *x2 = (- b - sqrt_d) / (2 * a);
+            *x1 = (-b + sqrt_d) / (2 * a);
+            *x2 = (-b - sqrt_d) / (2 * a);
 
             return two_roots;
         }
@@ -65,7 +65,7 @@ int Solver(double a, double b, double c, double *x1, double *x2) {
 }
 
 /* one test */
-void Test(struct Square_Example ex) {
+void Test(struct SquareExample ex) {
 
     double x1 = 0, x2 = 0;
 
@@ -74,7 +74,7 @@ void Test(struct Square_Example ex) {
     if (nRoots == ex.nRoots) {
         if ((nRoots == 1) || (nRoots == 2)) {
 
-            if ((Are_Equal(x1, ex.x1)) && (Are_Equal(x2, ex.x2))) {
+            if ((AreEqual(x1, ex.x1)) && (AreEqual(x2, ex.x2))) {
                 printf("ok\n");
             }
             else {
@@ -97,7 +97,7 @@ void Test(struct Square_Example ex) {
 
 void RunAllTests() {
 
-    struct Square_Example unit_tests[10] = {} ;
+    struct SquareExample unit_tests[10] = {} ;
 
     unit_tests[0] = {.a = 1, .b = 2, .c = 1, .nRoots = 1, .x1 = -1, .x2 = -1};
     unit_tests[1] = {.a = 1, .b = -2, .c = 1, .nRoots = 2, .x1 = 1, .x2 = 3}; /* wrong, nRoots = 1 */
