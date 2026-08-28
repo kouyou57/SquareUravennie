@@ -10,7 +10,13 @@ struct Square_Example {
     double x1, x2;
 } ;
 
-enum Solves {inf = -1, zero = 0, one = 1, two = 2} ;
+enum Solves {
+    inf_roots = -1,
+    zero_roots = 0,
+    one_root = 1,
+    two_roots = 2
+
+} ;
 
 int Is_Zero(double x);
 int Are_Equal(double num1, double num2);
@@ -20,22 +26,12 @@ void RunAllTests();
 
 /* checks double to be near zero */
 int Is_Zero(double x) {
-    if (fabs(x) <= ZERO_BORDER) {
-        return 1;
-    }
-    else {
-        return 0;
-    }
+    return (fabs(x) <= ZERO_BORDER) ;
 }
 
 /* compares equal or part-equal double */
 int Are_Equal(double num1, double num2) {
-    if (Is_Zero(num1 - num2)) {
-        return 1;
-    }
-    else {
-        return 0;
-    }
+    return Is_Zero(num1 - num2) ;
 }
 
 /* solver function */
@@ -43,11 +39,11 @@ int Solver(double a, double b, double c, double *x1, double *x2) {
 
     if (Is_Zero(a)) {
         if (Is_Zero(b)) {
-            return (Is_Zero(c)) ? inf : zero;  /* -1 = infinity */
+            return (Is_Zero(c)) ? inf_roots : zero_roots;
         }
         else {
             *x1 = *x2 = - c / b;
-            return one;
+            return one_root;
         }
     }
     else {
@@ -55,16 +51,16 @@ int Solver(double a, double b, double c, double *x1, double *x2) {
 
         if (Is_Zero(d)) {
             *x1 = *x2 = - b / (2 * a);
-            return one;
+            return one_root;
         }
         else if (d > 0) {
             double sqrt_d = sqrt(d);
             *x1 = (- b + sqrt_d) / (2 * a);
             *x2 = (- b - sqrt_d) / (2 * a);
 
-            return two;
+            return two_roots;
         }
-        else return zero;
+        else return zero_roots;
     }
 }
 
@@ -140,19 +136,19 @@ int main() {
     int nRoots = Solver(a, b, c, &x1, &x2); /* number of solutions */
 
     switch(nRoots) {
-        case inf:
+        case inf_roots:
             printf("infinity solves!\n");
             break;
 
-        case zero:
+        case zero_roots:
             printf("no solves!\n");
             break;
 
-        case one:
+        case one_root:
             printf("x = %lf\n", x1);
             break;
 
-        case two:
+        case two_roots:
             printf("x1 = %lf, x2 = %lf\n", x1, x2);
             break;
 
