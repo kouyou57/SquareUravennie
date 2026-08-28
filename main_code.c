@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#define ZERO_BORDER 10e-6
+#define ZERO_BORDER 1e-6
 
 struct Square_Example {
     double a, b, c;
@@ -10,15 +10,17 @@ struct Square_Example {
     double x1, x2;
 } ;
 
+enum Solves {inf = -1, zero = 0, one = 1, two = 2} ;
+
 int Is_Zero(double x);
 int Are_Equal(double num1, double num2);
 int Solver(double a, double b, double c, double *x1, double *x2);
-void Test(struct Square_Example example);
+void Test(struct Square_Example ex);
 void RunAllTests();
 
 /* checks double to be near zero */
 int Is_Zero(double x) {
-    if ((- ZERO_BORDER <= x) && (x <= ZERO_BORDER)) {
+    if (fabs(x) <= ZERO_BORDER) {
         return 1;
     }
     else {
@@ -41,11 +43,11 @@ int Solver(double a, double b, double c, double *x1, double *x2) {
 
     if (Is_Zero(a)) {
         if (Is_Zero(b)) {
-            return (Is_Zero(c)) ? -1 : 0;  /* -1 = infinity */
+            return (Is_Zero(c)) ? inf : zero;  /* -1 = infinity */
         }
         else {
             *x1 = *x2 = - c / b;
-            return 1;
+            return one;
         }
     }
     else {
@@ -53,43 +55,36 @@ int Solver(double a, double b, double c, double *x1, double *x2) {
 
         if (Is_Zero(d)) {
             *x1 = *x2 = - b / (2 * a);
-            return 1;
+            return one;
         }
         else if (d > 0) {
             double sqrt_d = sqrt(d);
             *x1 = (- b + sqrt_d) / (2 * a);
             *x2 = (- b - sqrt_d) / (2 * a);
 
-            return 2;
+            return two;
         }
-        else return 0;
+        else return zero;
     }
 }
 
 /* one test */
-void Test(struct Square_Example example) {
-    double a = example.a;
-    double b = example.b;
-    double c = example.c;
-    int nRoots_example = example.nRoots;
-    double x1_example = example.x1;
-    double x2_example = example.x2;
-
+void Test(struct Square_Example ex) {
 
     double x1 = 0, x2 = 0;
 
-    int nRoots = Solver(a, b, c, &x1, &x2);
+    int nRoots = Solver(ex.a, ex.b, ex.c, &x1, &x2);
 
-    if (nRoots == nRoots_example) {
+    if (nRoots == ex.nRoots) {
         if ((nRoots == 1) || (nRoots == 2)) {
 
-            if ((Are_Equal(x1, x1_example)) && (Are_Equal(x2, x2_example))) {
+            if ((Are_Equal(x1, ex.x1)) && (Are_Equal(x2, ex.x2))) {
                 printf("ok\n");
             }
             else {
                 printf("------> error!!\n");
                 printf("nRoots ok, nRoots = %d\n", nRoots);
-                printf("expected x1 = %lf, x2 = %lf\n", x1_example, x2_example);
+                printf("expected x1 = %lf, x2 = %lf\n", ex.x1, ex.x2);
                 printf("got x1 = %lf, x2 = %lf\n", x1, x2);
             }
         }
@@ -99,15 +94,14 @@ void Test(struct Square_Example example) {
     }
     else {
         printf("------> error!\n");
-        printf("expected nRoots = %d\n", nRoots_example);
+        printf("expected nRoots = %d\n", ex.nRoots);
         printf("got nRoots = %d\n", nRoots);
     }
 }
 
 void RunAllTests() {
 
-    struct Square_Example unit_tests[10];
-
+    struct Square_Example unit_tests[10] = {} ;
 
     unit_tests[0] = {.a = 1, .b = 2, .c = 1, .nRoots = 1, .x1 = -1, .x2 = -1};
     unit_tests[1] = {.a = 1, .b = -2, .c = 1, .nRoots = 2, .x1 = 1, .x2 = 3}; /* wrong, nRoots = 1 */
@@ -134,7 +128,7 @@ int main() {
 
     printf("\n\n\n------------------\n");
     printf("This program solves square equations\n");
-    printf("Enter a,b,c through a space (probel)\n");
+    printf("Enter a, b, c through a space (probel)\n");
 
     double a = 0, b = 0, c = 0; /* koefficients */
     scanf("%lg %lg %lg", &a, &b, &c);
@@ -146,26 +140,25 @@ int main() {
     int nRoots = Solver(a, b, c, &x1, &x2); /* number of solutions */
 
     switch(nRoots) {
-        case 0:
-            printf("no solves!");
+        case inf:
+            printf("infinity solves!\n");
             break;
 
-        case 1:
-            printf("x = %lf", x1);
+        case zero:
+            printf("no solves!\n");
             break;
 
-        case 2:
-            printf("x1 = %lf, x2 = %lf", x1, x2);
+        case one:
+            printf("x = %lf\n", x1);
             break;
 
-        case -1:
-            printf("infinity solves!");
+        case two:
+            printf("x1 = %lf, x2 = %lf\n", x1, x2);
             break;
 
         default:
-            printf("error! nRoots = %d", nRoots);
+            printf("error! nRoots = %d\n", nRoots);
             break;
     }
-    printf("\n");
     return 0;
 }
