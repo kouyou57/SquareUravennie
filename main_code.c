@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 
-#define ZERO_BORDER 0.0000009
+#define ZERO_BORDER 10e-6
 
 struct Square_Example {
     double a, b, c;
@@ -10,14 +10,25 @@ struct Square_Example {
     double x1, x2;
 } ;
 
+int Is_Zero(double x);
 int Are_Equal(double num1, double num2);
 int Solver(double a, double b, double c, double *x1, double *x2);
 void Test(struct Square_Example example);
 void RunAllTests();
 
-/* compares equal or part-equal double. kills warnings. no warnings, no problems */
+/* checks double to be near zero */
+int Is_Zero(double x) {
+    if ((- ZERO_BORDER <= x) && (x <= ZERO_BORDER)) {
+        return 1;
+    }
+    else {
+        return 0;
+    }
+}
+
+/* compares equal or part-equal double */
 int Are_Equal(double num1, double num2) {
-    if (fabs(num1 - num2) <= ZERO_BORDER) {
+    if (Is_Zero(num1 - num2)) {
         return 1;
     }
     else {
@@ -28,9 +39,9 @@ int Are_Equal(double num1, double num2) {
 /* solver function */
 int Solver(double a, double b, double c, double *x1, double *x2) {
 
-    if (Are_Equal(a, 0)) {
-        if (Are_Equal(b, 0)) {
-            return (Are_Equal(c, 0)) ? 3 : 0;  /* 3 = infinity */
+    if (Is_Zero(a)) {
+        if (Is_Zero(b)) {
+            return (Is_Zero(c)) ? -1 : 0;  /* -1 = infinity */
         }
         else {
             *x1 = *x2 = - c / b;
@@ -40,18 +51,18 @@ int Solver(double a, double b, double c, double *x1, double *x2) {
     else {
         double d = b * b - 4 * a * c;
 
-        if (Are_Equal(d, 0)) {
+        if (Is_Zero(d)) {
             *x1 = *x2 = - b / (2 * a);
             return 1;
         }
-        else if (d > ZERO_BORDER) {
+        else if (d > 0) {
             double sqrt_d = sqrt(d);
             *x1 = (- b + sqrt_d) / (2 * a);
             *x2 = (- b - sqrt_d) / (2 * a);
 
             return 2;
         }
-        else return 4; /* 4 - d<0 */
+        else return 0;
     }
 }
 
@@ -87,7 +98,7 @@ void Test(struct Square_Example example) {
         }
     }
     else {
-        printf("------> error!!\n");
+        printf("------> error!\n");
         printf("expected nRoots = %d\n", nRoots_example);
         printf("got nRoots = %d\n", nRoots);
     }
@@ -95,18 +106,20 @@ void Test(struct Square_Example example) {
 
 void RunAllTests() {
 
-    struct Square_Example ex0 = {.a = 1, .b = 2, .c = 1, .nRoots = 1, .x1 = -1, .x2 = -1};
-    struct Square_Example ex1 = {.a = 1, .b = -2, .c = 1, .nRoots = 2, .x1 = 1, .x2 = 3}; /* wrong */
-    struct Square_Example ex2 = {.a = 1, .b = 2, .c = 3, .nRoots = 4, .x1 = 0, .x2 = 0};
-    struct Square_Example ex3 = {.a = 0, .b = 1, .c = 2, .nRoots = 1, .x1 = -2, .x2 = -2};
-    struct Square_Example ex4 = {.a = 1, .b = -4, .c = -21, .nRoots = 2, .x1 = 7, .x2 = -3};
-    struct Square_Example ex5 = {.a = 0, .b = 0, .c = 0, .nRoots = 3, .x1 = 0, .x2 = 0};
-    struct Square_Example ex6 = {.a = 0, .b = 0, .c = 1, .nRoots = 0, .x1 = 0, .x2 = 0};
-    struct Square_Example ex7 = {.a = 0.3333333, .b = 2, .c = 3, .nRoots = 1, .x1 = -3, .x2 = -3};
-    struct Square_Example ex8 = {.a = 5, .b = 3, .c = 10, .nRoots = 4, .x1 = 0, .x2 = 0};
-    struct Square_Example ex9 = {.a = 0, .b = 0, .c = 15, .nRoots = 0, .x1 = 0, .x2 = 0};
+    struct Square_Example unit_tests[10];
 
-    struct Square_Example unit_tests[10] = {ex0, ex1, ex2, ex3, ex4, ex5, ex6, ex7, ex8, ex9} ;
+
+    unit_tests[0] = {.a = 1, .b = 2, .c = 1, .nRoots = 1, .x1 = -1, .x2 = -1};
+    unit_tests[1] = {.a = 1, .b = -2, .c = 1, .nRoots = 2, .x1 = 1, .x2 = 3}; /* wrong, nRoots = 1 */
+    unit_tests[2] = {.a = 1, .b = 2, .c = 3, .nRoots = 0, .x1 = 0, .x2 = 0};
+    unit_tests[3] = {.a = 0, .b = 1, .c = 2, .nRoots = 1, .x1 = -2, .x2 = -2};
+    unit_tests[4] = {.a = 1, .b = -4, .c = -21, .nRoots = 2, .x1 = 5, .x2 = 4}; /*wrong, x1 = 7, x2 = -3 */
+    unit_tests[5] = {.a = 0, .b = 0, .c = 0, .nRoots = -1, .x1 = 0, .x2 = 0};
+    unit_tests[6] = {.a = 0, .b = 0, .c = 1, .nRoots = 0, .x1 = 0, .x2 = 0};
+    unit_tests[7] = {.a = 0.3333333, .b = 2, .c = 3, .nRoots = 1, .x1 = -3, .x2 = -3};
+    unit_tests[8] = {.a = 5, .b = 3, .c = 10, .nRoots = 2, .x1 = 0, .x2 = 0}; /*wrong, nRoots = 0 */
+    unit_tests[9] = {.a = 0, .b = 0, .c = 15, .nRoots = 0, .x1 = 0, .x2 = 0};
+
 
     int number_of_tests = sizeof(unit_tests)/sizeof(unit_tests[0]);
     for (int i=0; i < number_of_tests; i++) {
@@ -130,7 +143,7 @@ int main() {
 
     double x1 = 0, x2 = 0; /* solutions */
 
-    int nRoots = Solver(a,b,c, &x1, &x2); /* number of solutions */
+    int nRoots = Solver(a, b, c, &x1, &x2); /* number of solutions */
 
     switch(nRoots) {
         case 0:
@@ -145,12 +158,8 @@ int main() {
             printf("x1 = %lf, x2 = %lf", x1, x2);
             break;
 
-        case 3:
+        case -1:
             printf("infinity solves!");
-            break;
-
-        case 4:
-            printf("d < 0! zero solves or error");
             break;
 
         default:
