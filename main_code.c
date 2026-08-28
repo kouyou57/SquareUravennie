@@ -10,7 +10,7 @@ struct SquareExample {
     double x1, x2;
 } ;
 
-enum Solves {
+enum Roots {
     inf_roots = -1,
     zero_roots = 0,
     one_root = 1,
@@ -95,24 +95,25 @@ void Test(struct SquareExample ex) {
     }
 }
 
+/* all tests checking Solver() */
 void RunAllTests() {
 
     struct SquareExample unit_tests[10] = {} ;
 
-    unit_tests[0] = {.a = 1, .b = 2, .c = 1, .nRoots = 1, .x1 = -1, .x2 = -1};
-    unit_tests[1] = {.a = 1, .b = -2, .c = 1, .nRoots = 2, .x1 = 1, .x2 = 3}; /* wrong, nRoots = 1 */
-    unit_tests[2] = {.a = 1, .b = 2, .c = 3, .nRoots = 0, .x1 = 0, .x2 = 0};
-    unit_tests[3] = {.a = 0, .b = 1, .c = 2, .nRoots = 1, .x1 = -2, .x2 = -2};
-    unit_tests[4] = {.a = 1, .b = -4, .c = -21, .nRoots = 2, .x1 = 5, .x2 = 4}; /*wrong, x1 = 7, x2 = -3 */
-    unit_tests[5] = {.a = 0, .b = 0, .c = 0, .nRoots = -1, .x1 = 0, .x2 = 0};
-    unit_tests[6] = {.a = 0, .b = 0, .c = 1, .nRoots = 0, .x1 = 0, .x2 = 0};
-    unit_tests[7] = {.a = 0.3333333, .b = 2, .c = 3, .nRoots = 1, .x1 = -3, .x2 = -3};
-    unit_tests[8] = {.a = 5, .b = 3, .c = 10, .nRoots = 2, .x1 = 0, .x2 = 0}; /*wrong, nRoots = 0 */
-    unit_tests[9] = {.a = 0, .b = 0, .c = 15, .nRoots = 0, .x1 = 0, .x2 = 0};
+    unit_tests[0] = {.a = 1,         .b = 2,    .c = 1,     .nRoots = 1,    .x1 = -1,   .x2 = -1};
+    unit_tests[1] = {.a = 1,         .b = -2,   .c = 1,     .nRoots = 2,    .x1 = 1,    .x2 = 3}; /* wrong, nRoots = 1 */
+    unit_tests[2] = {.a = 1,         .b = 2,    .c = 3,     .nRoots = 0,    .x1 = 0,    .x2 = 0};
+    unit_tests[3] = {.a = 0,         .b = 1,    .c = 2,     .nRoots = 1,    .x1 = -2,   .x2 = -2};
+    unit_tests[4] = {.a = 1,         .b = -4,   .c = -21,   .nRoots = 2,    .x1 = 5,    .x2 = 4}; /*wrong, x1 = 7, x2 = -3 */
+    unit_tests[5] = {.a = 0,         .b = 0,    .c = 0,     .nRoots = -1,   .x1 = 0,    .x2 = 0};
+    unit_tests[6] = {.a = 0,         .b = 0,    .c = 1,     .nRoots = 0,    .x1 = 0,    .x2 = 0};
+    unit_tests[7] = {.a = 0.3333333, .b = 2,    .c = 3,     .nRoots = 1,    .x1 = -3,   .x2 = -3};
+    unit_tests[8] = {.a = 5,         .b = 3,    .c = 10,    .nRoots = 2,    .x1 = 0,    .x2 = 0}; /*wrong, nRoots = 0 */
+    unit_tests[9] = {.a = 0,         .b = 0,    .c = 15,    .nRoots = 0,    .x1 = 0,    .x2 = 0};
 
 
     int number_of_tests = sizeof(unit_tests)/sizeof(unit_tests[0]);
-    for (int i=0; i < number_of_tests; i++) {
+    for (int i = 0; i < number_of_tests; i++) {
         Test(unit_tests[i]);
     }
 
@@ -131,17 +132,17 @@ int main() {
     printf("----------\n");
 
 
-    double x1 = 0, x2 = 0; /* solutions */
+    double x1 = 0, x2 = 0; /* roots */
 
-    int nRoots = Solver(a, b, c, &x1, &x2); /* number of solutions */
+    int nRoots = Solver(a, b, c, &x1, &x2); /* number of roots */
 
     switch(nRoots) {
         case inf_roots:
-            printf("infinity solves!\n");
+            printf("infinity roots!\n");
             break;
 
         case zero_roots:
-            printf("no solves!\n");
+            printf("no roots!\n");
             break;
 
         case one_root:
