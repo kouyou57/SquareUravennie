@@ -77,7 +77,7 @@ enum Roots LineSolver(double k, double m, double *x) {
  */
 enum Roots Solver(double a, double b, double c, double *x1, double *x2) {
 
-    if (IsZero(a)) { 
+    if (IsZero(a)) {
         *x2 = NAN;
         return LineSolver(b, c, x1);
     }
@@ -97,11 +97,11 @@ enum Roots Solver(double a, double b, double c, double *x1, double *x2) {
 
         return TWO_ROOTS;
     }
-    
+
     *x1 = NAN;
     *x2 = NAN;
     return ZERO_ROOTS;
-    
+
 }
 
 
@@ -130,6 +130,7 @@ void Test(struct SquareExample ex) {
                     printf("got x1 = %lfc, x2 = %lf\n", x1, x2);
                     printf("<------\n");
                 }
+                break;
 
             case ONE_ROOTS:
                 if (AreEqual(x1, ex.x1)) {
@@ -141,7 +142,8 @@ void Test(struct SquareExample ex) {
                     printf("got x = %lf\n", x1);
                     printf("<------\n");
                 }
-            
+                break;
+
             case TWO_ROOTS:
                 if (AreEqual(x1, ex.x1) && AreEqual(x2, ex.x2)) {
                     printf("ok\n");
@@ -152,6 +154,7 @@ void Test(struct SquareExample ex) {
                     printf("got x1 = %lf, x2 = %lf\n", x1, x2);
                     printf("<------\n");
                 }
+                break;
 
             case INF_ROOTS:
                 if (isnan(x1) && isnan(x2)) {
@@ -163,11 +166,13 @@ void Test(struct SquareExample ex) {
                     printf("got x1 = %lf, x2 = %lf\n", x1, x2);
                     printf("<------\n");
                 }
+                break;
 
             default:
                 printf("------> error!\n");
                 printf("nRoots = %d\n", nRoots);
                 printf("<------\n");
+                break;
         }
     }
     else { /* if (nRoots != ex.nRoots) */
