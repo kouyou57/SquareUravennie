@@ -127,7 +127,7 @@ void Test(struct SquareExample ex) {
                 else {
                     printf("------> error!\n");
                     printf("zero roots, x1 = NAN and x2 = NAN\n");
-                    printf("got x1 = %lfc, x2 = %lf\n", x1, x2);
+                    printf("got x1 = %lf, x2 = %lf\n", x1, x2);
                     printf("<------\n");
                 }
                 break;
@@ -202,7 +202,7 @@ void RunAllTests() {
     	(struct SquareExample){.a = 0,			.b = 0,		.c = 15,	.nRoots = ZERO_ROOTS,	.x1 = NAN,	.x2 = NAN},
 	};
 
-    int number_of_tests = sizeof(unit_tests)/sizeof(unit_tests[0]);
+    int number_of_tests = sizeof(unit_tests) / sizeof(unit_tests[0]);
     for (int i = 0; i < number_of_tests; i++) {
         Test(unit_tests[i]);
     }
