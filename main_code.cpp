@@ -3,24 +3,23 @@
 #include <stdio.h>
 #include <math.h>
 
-#define ZERO_BORDER 1e-6
-
 /**
-	\brief different varieties of number of roots: infinity, 0, 1, 2
+ * \brief different varieties of number of roots: infinity, 0, 1, 2
  */
 enum Roots {
-    INF_ROOTS 	= -1,
-    ZERO_ROOTS	= 0,
-    ONE_ROOTS	= 1,
-    TWO_ROOTS	= 2,
+    ZERO_ROOTS,
+    ONE_ROOTS,
+    TWO_ROOTS,
+    INF_ROOTS,
 };
 
 /**
-    \brief structure for examples of equations
-	\param a, b, c koefficients of the equation: a * x**2 + b * x + c = 0
-	\param nRoots number of roots of the equation
-	\param x1, x2 roots
+ * \brief structure for examples of equations
+ * \param a, b, c koefficients of the equation: a * x**2 + b * x + c = 0
+ * \param nRoots number of roots of the equation
+ * \param x1, x2 roots
 */
+
 struct SquareExample {
     double a, b, c;
     enum Roots nRoots;
@@ -34,14 +33,19 @@ enum Roots Solver(double a, double b, double c, double *x1, double *x2);
 void Test(struct SquareExample ex);
 void RunAllTests();
 
+#define ZERO_BORDER 1e-6
+
 /**
- \brief check double to be near zero. this function made to avoid == comparison with double
- \param x double that needs to be checked
- \return 1 if double is around zero, 0 if not
+ * \brief check double to be near zero. this function made to avoid == comparison with double
+ * \param x double that needs to be checked
+ * \return 1 if double is around zero, 0 if not
  */
 int IsZero(double x) {
     return fabs(x) <= ZERO_BORDER;
 }
+#undef ZERO_BORDER
+
+
 
 /**
  * \brief compares doubles. rhis function was made to avoid == comparison between double
@@ -117,70 +121,71 @@ void Test(struct SquareExample ex) {
 
     enum Roots nRoots = Solver(ex.a, ex.b, ex.c, &x1, &x2);
 
-    if (ex.nRoots == nRoots) {
-
-        switch(nRoots) {
-            case ZERO_ROOTS:
-                if (isnan(x1) && isnan(x2)) {
-                    printf("ok\n");
-                }
-                else {
-                    printf("------> error!\n");
-                    printf("zero roots, x1 = NAN and x2 = NAN\n");
-                    printf("got x1 = %lf, x2 = %lf\n", x1, x2);
-                    printf("<------\n");
-                }
-                break;
-
-            case ONE_ROOTS:
-                if (AreEqual(x1, ex.x1)) {
-                    printf("ok\n");
-                }
-                else {
-                    printf("------> error!\n");
-                    printf("expected one root, ex.x = %lf\n", ex.x1);
-                    printf("got x = %lf\n", x1);
-                    printf("<------\n");
-                }
-                break;
-
-            case TWO_ROOTS:
-                if (AreEqual(x1, ex.x1) && AreEqual(x2, ex.x2)) {
-                    printf("ok\n");
-                }
-                else {
-                    printf("------> error!\n");
-                    printf("expected two roots, x1 = %lf, x2 = %lf\n", ex.x1, ex.x2);
-                    printf("got x1 = %lf, x2 = %lf\n", x1, x2);
-                    printf("<------\n");
-                }
-                break;
-
-            case INF_ROOTS:
-                if (isnan(x1) && isnan(x2)) {
-                    printf("ok\n");
-                }
-                else {
-                    printf("------> error!\n");
-                    printf("infinity roots, x1 = NAN and x2 = NAN\n");
-                    printf("got x1 = %lf, x2 = %lf\n", x1, x2);
-                    printf("<------\n");
-                }
-                break;
-
-            default:
-                printf("------> error!\n");
-                printf("nRoots = %d\n", nRoots);
-                printf("<------\n");
-                break;
-        }
-    }
-    else { /* if (nRoots != ex.nRoots) */
+    if (ex.nRoots != nRoots) {
         printf("------> error!\n");
         printf("expected nRoots = %d\n", ex.nRoots);
         printf("got nRoots = %d\n", nRoots);
         printf("<------\n");
+
+        return;
     }
+
+    switch(nRoots) {
+        case ZERO_ROOTS:
+            if (isnan(x1) && isnan(x2)) {
+                printf("ok\n");
+            }
+            else {
+                printf("------> error!\n");
+                printf("zero roots, x1 = NAN and x2 = NAN\n");
+                printf("got x1 = %lf, x2 = %lf\n", x1, x2);
+                printf("<------\n");
+            }
+            break;
+
+        case ONE_ROOTS:
+            if (AreEqual(x1, ex.x1)) {
+                printf("ok\n");
+            }
+            else {
+                printf("------> error!\n");
+                printf("expected one root, ex.x = %lf\n", ex.x1);
+                printf("got x = %lf\n", x1);
+                printf("<------\n");
+            }
+            break;
+
+        case TWO_ROOTS:
+            if (AreEqual(x1, ex.x1) && AreEqual(x2, ex.x2)) {
+                printf("ok\n");
+            }
+            else {
+                printf("------> error!\n");
+                printf("expected two roots, x1 = %lf, x2 = %lf\n", ex.x1, ex.x2);
+                printf("got x1 = %lf, x2 = %lf\n", x1, x2);
+                printf("<------\n");
+            }
+            break;
+
+        case INF_ROOTS:
+            if (isnan(x1) && isnan(x2)) {
+                printf("ok\n");
+            }
+            else {
+                printf("------> error!\n");
+                printf("infinity roots, x1 = NAN and x2 = NAN\n");
+                printf("got x1 = %lf, x2 = %lf\n", x1, x2);
+                printf("<------\n");
+            }
+            break;
+
+        default:
+            printf("------> error!\n");
+            printf("nRoots = %d\n", nRoots);
+            printf("<------\n");
+            break;
+    }
+
 }
 
 /**
@@ -227,9 +232,6 @@ int main() {
     enum Roots nRoots = Solver(a, b, c, &x1, &x2); /* number of roots */
 
     switch(nRoots) {
-        case INF_ROOTS:
-            printf("infinity roots!\n");
-            break;
 
         case ZERO_ROOTS:
             printf("no roots!\n");
@@ -241,6 +243,10 @@ int main() {
 
         case TWO_ROOTS:
             printf("x1 = %lg, x2 = %lg\n", x1, x2);
+            break;
+
+        case INF_ROOTS:
+            printf("infinity roots!\n");
             break;
 
         default:
